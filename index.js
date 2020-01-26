@@ -12,7 +12,7 @@ const line_config = {
 server.listen(process.env.PORT || 3000);
 
 // APIコールのためのクライアントインスタンスを作成
-const bot = new link.Client(line_config);
+const bot = new line.Client(line_config);
 
 // ルーターの設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
