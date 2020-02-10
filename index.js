@@ -1,12 +1,18 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIをインポート
+const http = require("axios"); // axiosをインポート
 
-// パラメーターの設定
+// パラメーターの設定(LINE)
 const line_config = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンを設定
   channelSecret: process.env.LINE_CHANNEL_SECRET // 環境変数からChannel Secretを設定
 };
+
+// パラメーターの設定(天気予報API)
+const cityId = 1850147;
+const appid = "d83e171ef7c977417e568f59526ada68";
+const apiUrl = "https://samples.openweathermap.org/data/2.5/forecast";
 
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
@@ -25,11 +31,30 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     //イベントのタイプがメッセージかつテキストだったら
     if(event.type == 'message' && event.message.type == 'text') {
       if(event.message.text == 'こんにちは'){
-        // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-        events_processed.push(bot.replyMessage(event.replyToken, {
-          type: 'text',
-          text: 'これはこれは'
-        }));
+        axios.get(apiUrl, {
+          params: {
+            id: cityId,
+            appid: appid
+          },
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          responseType: 'json'
+        })
+        .then(res => 
+          // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+          essed.push(bot.replyMessage(event.replyToken, {
+            type: 'text',
+            text: res
+          }))
+        )
+        .catch(err => 
+          essed.push(bot.replyMessage(event.replyToken, {
+            type: 'text',
+            text: err
+          }))
+        )
       }
     }
   });
