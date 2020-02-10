@@ -45,13 +45,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
-            text: res
+            text: "APIの実行に成功したよ"
           }))
         )
         .catch(err => 
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
-            text: err
+            text: "API実行に失敗したよ"
           }))
         )
       }
