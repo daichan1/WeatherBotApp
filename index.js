@@ -44,13 +44,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         })
         .then(res => 
           // replyMessage()で返信し、そのプロミスをevents_processedに追加。
-          essed.push(bot.replyMessage(event.replyToken, {
+          events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: res
           }))
         )
         .catch(err => 
-          essed.push(bot.replyMessage(event.replyToken, {
+          events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: err
           }))
