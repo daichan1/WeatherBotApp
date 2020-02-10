@@ -26,11 +26,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     //イベントのタイプがメッセージかつテキストだったら
     if(event.type == 'message' && event.message.type == 'text') {
       if(event.message.text == 'こんにちは'){
-        const res_data = weather.forecastData();
+        const resData = weather.forecastData();
         // replyMessage()で返信し、そのプロミスをevents_processedに追加。
         events_processed.push(bot.replyMessage(event.replyToken, {
           type: 'text',
-          text: res_data
+          text: resData
         }))
       }
     }
