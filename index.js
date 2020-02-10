@@ -11,7 +11,6 @@ const line_config = {
 
 // パラメーターの設定(天気予報API)
 const cityId = 1850147;
-const appid = "d83e171ef7c977417e568f59526ada68";
 const apiUrl = "https://samples.openweathermap.org/data/2.5/forecast";
 
 // Webサーバーの設定
@@ -34,7 +33,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         axios.get(apiUrl, {
           params: {
             id: cityId,
-            appid: appid
+            appid: process.env.OPEN_WEATHER_API_APPID
           },
           headers: {
             Accept: 'application/json',
