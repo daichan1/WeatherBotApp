@@ -1,7 +1,7 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk"); // Messaging APIをインポート
-const http = require("axios"); // axiosをインポート
+const axios = require("axios"); // axiosをインポート
 
 // パラメーターの設定(LINE)
 const line_config = {
