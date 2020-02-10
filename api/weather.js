@@ -17,6 +17,6 @@ exports.forecastData = function() {
     return "APIの実行に成功";
   })
   .catch(err => {
-    return "APIの実行に失敗"
+    return "APIの実行に失敗";
   })
 }
