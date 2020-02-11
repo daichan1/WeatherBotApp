@@ -10,6 +10,10 @@ const line_config = {
   channelSecret: process.env.LINE_CHANNEL_SECRET // 環境変数からChannel Secretを設定
 };
 
+// パラメーターの設定(天気予報API)
+const cityId = 1850147;
+const apiUrl = "https://samples.openweathermap.org/data/2.5/forecast";
+
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
 
