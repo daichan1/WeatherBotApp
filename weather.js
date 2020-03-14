@@ -1,14 +1,11 @@
 const axios = require("axios");
+const weatherApi = require("./settings/weatherApi");
 
-// パラメーターの設定(天気予報API)
-const cityId = 1850147;
-const apiUrl = "https://samples.openweathermap.org/data/2.5/forecast";
-
-exports.forecastData = function() {
+exports.fetchForecastData = function() {
   let resText = '';
-  axios.get(apiUrl, {
+  axios.get(weatherApi.apiUrl, {
     params: {
-      id: cityId,
+      id: weatherApi.cityId,
       appid: process.env.OPEN_WEATHER_API_APPID
     },
     headers: {
