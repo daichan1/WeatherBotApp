@@ -1,33 +1,29 @@
 // モジュールのインポート
 const server = require("express")();
-const line = require("@line/bot-sdk"); // Messaging APIをインポート
+const line = require("@line/bot-sdk");
 const axios = require("axios");
 
 // パラメーターの設定(LINE)
 const line_config = {
-  channelAccessToken: process.env.LINE_ACCESS_TOKEN, // 環境変数からアクセストークンを設定
-  channelSecret: process.env.LINE_CHANNEL_SECRET // 環境変数からChannel Secretを設定
+  channelAccessToken: process.env.LINE_ACCESS_TOKEN,
+  channelSecret: process.env.LINE_CHANNEL_SECRET
 };
 
-// openweatherAPIの設定ファイル
+// 天気予報APIのパラメーター
 const cityId = 1850147; // 東京
 const apiUrl = "https://samples.openweathermap.org/data/2.5/forecast";
 
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
 
-// APIコールのためのクライアントインスタンスを作成
 const bot = new line.Client(line_config);
 
 // ルーターの設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
-  // 先行してLINE側に200を送る
   res.sendStatus(200);
-  // 全てのイベント処理のプロミスを格納する配列
   let events_processed = [];
   // イベントオブジェクトを順次処理
   req.body.events.forEach((event) => {
-    //イベントのタイプがメッセージかつテキストだったら
     if(event.type == 'message' && event.message.type == 'text') {
       if(event.message.text == 'こんにちは'){
         axios.get(apiUrl, {
@@ -42,7 +38,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           responseType: 'json'
         })
         .then(res => {
-          // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+          // 返信内容を設定してユーザーに送信
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: 'APIの実行に成功'
@@ -50,7 +46,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           
         })
         .catch(err => {
-          // replyMessage()で返信し、そのプロミスをevents_processedに追加。
+          // エラーメッセージを設定してユーザーに送信
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: 'APIの実行に失敗'
@@ -59,7 +55,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       }
     }
   });
-  // 全てのイベント処理が終了したら何個のイベントが処理されたかを出力
+  // 全てのイベント処理が終了したら何個のイベントが処理されたかをログに出力
   Promise.all(events_processed).then(
     (response) => {
       console.log(`${response.length} event(s) processed`);
