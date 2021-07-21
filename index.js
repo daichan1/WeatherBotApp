@@ -10,8 +10,9 @@ const line_config = {
 };
 
 // 天気予報APIのパラメーター
-const cityId = 1850147; // 東京
-const apiUrl = "https://samples.openweathermap.org/data/2.5/forecast";
+const lat = 35.689499
+const lon = 139.691711
+const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
@@ -28,7 +29,9 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       if(event.message.text == 'こんにちは'){
         axios.get(apiUrl, {
           params: {
-            id: cityId,
+            lat: lat,
+            lon: lon,
+            lang: "ja",
             appid: process.env.OPEN_WEATHER_API_APPID
           },
           headers: {
