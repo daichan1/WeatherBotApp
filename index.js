@@ -26,7 +26,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   // イベントオブジェクトを順次処理
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
-      if(event.message.text == 'こんにちは'){
+      if(event.message.text == '週間予報'){
         axios.get(apiUrl, {
           params: {
             lat: lat,
@@ -44,7 +44,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           // 返信内容を設定してユーザーに送信
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
-            text: 'APIの実行に成功'
+            text: '週間予報を出力'
           }))
           
         })
