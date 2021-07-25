@@ -31,7 +31,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           params: {
             lat: lat,
             lon: lon,
-            lang: "ja",
+            "lang": "ja",
             appid: process.env.OPEN_WEATHER_API_APPID
           },
           headers: {
@@ -44,7 +44,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           // 返信内容を設定してユーザーに送信
           let week_weather = ""
           for(i = 0; i < res.data.daily.length; i++) {
-            week_weather += response_message(res.data.daily[i])
+            week_weather += responseMessage(res.data.daily[i])
           }
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
@@ -70,12 +70,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   )
 });
 
-function response_message(daily_data) {
+function responseMessage(daily_data) {
   return `
-日付：${daily_data.dt}
+日付：${unixtimeToDate(daily_data.dt)}
 天気：${daily_data.weather[0].main}
 最高気温：${daily_data.temp.max}
 最低気温：${daily_data.temp.min}
 降水確率：${daily_data.pop}
   `
+}
+
+// unix時間の変換
+function unixtimeToDate(unixtime) {
+  let date = new Date(unixtime * 1000)
+  return date.toLocaleDateString()
 }
