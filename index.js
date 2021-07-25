@@ -89,5 +89,5 @@ function unixtimeToDate(unixtime) {
 // 気温の変換
 function kelvinToCelsius(kelvin) {
   const kelvinDegree = 273.15
-  return kelvin - kelvinDegree
+  return Math.floor(kelvin - kelvinDegree)
 }
