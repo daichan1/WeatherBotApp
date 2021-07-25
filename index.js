@@ -31,7 +31,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           params: {
             lat: lat,
             lon: lon,
-            "lang": "ja",
+            lang: "ja",
             appid: process.env.OPEN_WEATHER_API_APPID
           },
           headers: {
@@ -84,5 +84,5 @@ function responseMessage(daily_data) {
 function unixtimeToDate(unixtime) {
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   let date = new Date(unixtime * 1000)
-  return date.toLocaleDateString(undefined, options)
+  return `${date.getFullYear()}年${date.getMonth()+1}月${date.getDate()}日`
 }
