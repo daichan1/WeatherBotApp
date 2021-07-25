@@ -43,7 +43,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         .then(res => {
           // 返信内容を設定してユーザーに送信
           let week_weather = ""
-           for(i = 0; i < res["daily"].length; i++) {
+           for(i = 0; i < res.data.daily.length; i++) {
             // let one_day_weather = `
             //   日付：${res.daily[i].dt}
             //   天気：${res.daily[i].weather[0].main}
