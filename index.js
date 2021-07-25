@@ -44,15 +44,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           // 返信内容を設定してユーザーに送信
           let week_weather = ""
           for(i = 0; i < res.data.daily.length; i++) {
-            let one_day_weather = `
-              日付：${res.data.daily[i].dt}
-              天気：${res.data.daily[i].weather[0].main}
-              最高気温：${res.data.daily[i].temp.max}
-              最低気温：${res.data.daily[i].temp.min}
-              降水確率：${res.data.daily[i].pop}
-              ¥n
-              `
-              week_weather += one_day_weather
+            week_weather += response_message(res.data.daily[i])
           }
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
@@ -77,3 +69,13 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     }
   )
 });
+
+function response_message(daily_data) {
+  return `
+日付：${daily_data.dt}
+天気：${daily_data.weather[0].main}
+最高気温：${daily_data.temp.max}
+最低気温：${daily_data.temp.min}
+降水確率：${daily_data.pop}
+  `
+}
