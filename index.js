@@ -82,6 +82,7 @@ function responseMessage(daily_data) {
 
 // unix時間の変換
 function unixtimeToDate(unixtime) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
   let date = new Date(unixtime * 1000)
-  return date.toLocaleDateString()
+  return date.toLocaleDateString(undefined, options)
 }
