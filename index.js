@@ -71,11 +71,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 });
 
 function responseMessage(daily_data) {
-  return `日付：${unixtimeToDate(daily_data.dt)} ${daily_data.weather[0].icon}
+  return `日付：${unixtimeToDate(daily_data.dt)} ${weatherIcon(daily_data.weather[0].icon)}
 最高気温：${kelvinToCelsius(daily_data.temp.max)}度
 最低気温：${kelvinToCelsius(daily_data.temp.min)}度
 降水確率：${daily_data.pop * 100}%
-  `
+
+`
 }
 
 // unix時間の変換
@@ -88,4 +89,9 @@ function unixtimeToDate(unixtime) {
 function kelvinToCelsius(kelvin) {
   const kelvinDegree = 273.15
   return Math.floor(kelvin - kelvinDegree)
+}
+
+// 天気アイコンURL
+function weatherIcon(fileName) {
+  return `http://openweathermap.org/img/wn/${fileName}@2x.png`
 }
