@@ -71,7 +71,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 });
 
 function responseMessage(daily_data) {
-  return `日付：${unixtimeToDate(daily_data.dt)} ${getWeatherEmoji(daily_data.weather[0].main)}
+  return `${unixtimeToDate(daily_data.dt)} ${getWeatherEmoji(daily_data.weather[0].main)}
 最高気温：${kelvinToCelsius(daily_data.temp.max)}度
 最低気温：${kelvinToCelsius(daily_data.temp.min)}度
 降水確率：${daily_data.pop * 100}%
