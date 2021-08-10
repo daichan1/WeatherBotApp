@@ -45,7 +45,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           let week_weather = ""
           for(i = 0; i < res.data.daily.length; i++) {
             if(i < res.data.daily.length - 1) {
-              week_weather += responseMessage(res.data.daily[i]) + "¥n"
+              week_weather += responseMessage(res.data.daily[i]) + "\n"
             } else {
               week_weather += responseMessage(res.data.daily[i])
             }
