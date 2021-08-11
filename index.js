@@ -2,6 +2,7 @@
 const server = require("express")();
 const line = require("@line/bot-sdk");
 const axios = require("axios");
+const Area = require("./src/area");
 
 // パラメーターの設定(LINE)
 const line_config = {
@@ -26,6 +27,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   // イベントオブジェクトを順次処理
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
+      if(event.message.text == 1) {
+        let tokyo = new Area(1850144)
+        const testStr = `${tokyo.id}\n${tokyo.name}\n${tokyo.lat}\n${tokyo.lon}`
+        events_processed.push(bot.replyMessage(event.replyToken, {
+          type: 'text',
+          text: testStr
+        }))
+      }
       if(event.message.text == '週間予報'){
         axios.get(apiUrl, {
           params: {
