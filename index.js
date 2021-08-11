@@ -49,8 +49,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       if(event.message.text == '週間予報'){
         axios.get(apiUrl, {
           params: {
-            lat: lat,
-            lon: lon,
+            lat: selectArea == null ? lat : selectArea.lat,
+            lon: selectArea == null ? lon : selectArea.lon,
             lang: "ja",
             appid: process.env.OPEN_WEATHER_API_APPID
           },
