@@ -22,4 +22,4 @@ class Area {
   }
 }
 
-export default class { Area }
+module.exports = Area
