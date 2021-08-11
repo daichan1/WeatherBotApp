@@ -2,7 +2,7 @@
 const server = require("express")();
 const line = require("@line/bot-sdk");
 const axios = require("axios");
-import Area from "./src/area"
+const Area = require("./src/area")
 
 // パラメーターの設定(LINE)
 const line_config = {
