@@ -15,6 +15,10 @@ const lat = 35.689499
 const lon = 139.691711
 const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
+// 地域ID
+const tokyoAreaId = 1850144
+const yokohamaAreaId = 1848354
+
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
 
@@ -24,17 +28,24 @@ const bot = new line.Client(line_config);
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   res.sendStatus(200);
   let events_processed = [];
+  let selectArea = null
   // イベントオブジェクトを順次処理
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
       if(event.message.text == 1) {
-        let tokyo = new Area(1850144)
-        const testStr = `${tokyo.id}\n${tokyo.name}\n${tokyo.lat}\n${tokyo.lon}`
+        selectArea = new Area(tokyoAreaId)
         events_processed.push(bot.replyMessage(event.replyToken, {
           type: 'text',
-          text: testStr
+          text: `天気予報表示地域を${selectArea.name}に設定しました`
+        }))
+      } else if(event.message.text == 2) {
+        selectArea = new Area(yokohamaAreaId)
+        events_processed.push(bot.replyMessage(event.replyToken, {
+          type: 'text',
+          text: `天気予報表示地域を${selectArea.name}に設定しました`
         }))
       }
+
       if(event.message.text == '週間予報'){
         axios.get(apiUrl, {
           params: {
