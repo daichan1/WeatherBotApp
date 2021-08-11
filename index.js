@@ -33,14 +33,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
       switch(event.message.text) {
-        case 1:
+        case "1":
           selectArea = new Area(tokyoAreaId)
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
-        case 2:
+        case "2":
           selectArea = new Area(yokohamaAreaId)
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
