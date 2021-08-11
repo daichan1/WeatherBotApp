@@ -22,4 +22,4 @@ class Area {
   }
 }
 
-export default Area
+export default class { Area }
