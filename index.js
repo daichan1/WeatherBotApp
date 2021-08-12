@@ -2,6 +2,7 @@
 const server = require("express")();
 const line = require("@line/bot-sdk");
 const axios = require("axios");
+const cron = require("node-cron");
 const areaModule = require("./src/area")
 
 // パラメーターの設定(LINE)
@@ -94,6 +95,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     }
   )
 });
+
+// 自動通知機能
+cron.schedule("0 15 10 * * *", () => {
+  bot.pushMessage("chansa-", "test")
+})
 
 function responseMessage(daily_data) {
   return `${unixtimeToDate(daily_data.dt)} ${getWeatherEmoji(daily_data.weather[0].main)}
