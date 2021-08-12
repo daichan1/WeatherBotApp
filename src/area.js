@@ -1,3 +1,7 @@
+// 地域ID
+const tokyoAreaId = 1850144
+const yokohamaAreaId = 1848354
+
 // 地域リスト
 const areaList = {
   1850144: {
@@ -22,4 +26,8 @@ class Area {
   }
 }
 
-module.exports = Area
+module.exports = {
+  Area: Area,
+  tokyoAreaId: tokyoAreaId,
+  yokohamaAreaId: yokohamaAreaId
+}

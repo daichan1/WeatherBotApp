@@ -2,7 +2,7 @@
 const server = require("express")();
 const line = require("@line/bot-sdk");
 const axios = require("axios");
-const Area = require("./src/area")
+const areaModule = require("./src/area")
 
 // パラメーターの設定(LINE)
 const line_config = {
@@ -16,9 +16,6 @@ const defaultLon = 139.691711
 // 天気予報APIのURL
 const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
-// 地域ID
-const tokyoAreaId = 1850144
-const yokohamaAreaId = 1848354
 // 天気予報表示設定地域
 let selectArea = null
 
@@ -36,14 +33,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     if(event.type == 'message' && event.message.type == 'text') {
       switch(event.message.text) {
         case "1":
-          selectArea = new Area(tokyoAreaId)
+          selectArea = new areaModule.Area(areaModule.tokyoAreaId)
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
         case "2":
-          selectArea = new Area(yokohamaAreaId)
+          selectArea = new areaModule.Area(areaModule.yokohamaAreaId)
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: `天気予報表示地域を${selectArea.name}に設定しました`
