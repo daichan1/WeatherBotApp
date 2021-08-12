@@ -24,11 +24,12 @@ server.listen(process.env.PORT || 3000);
 
 const bot = new line.Client(line_config);
 
+let selectArea = null
+
 // ルーターの設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   res.sendStatus(200);
   let events_processed = [];
-  let selectArea = null
   // イベントオブジェクトを順次処理
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
