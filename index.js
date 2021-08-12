@@ -10,26 +10,27 @@ const line_config = {
   channelSecret: process.env.LINE_CHANNEL_SECRET
 };
 
-// 天気予報APIのパラメーター
-const lat = 35.689499
-const lon = 139.691711
+// 初期座標(東京)
+const defaultLat = 35.689499
+const defaultLon = 139.691711
+// 天気予報APIのURL
 const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
 // 地域ID
 const tokyoAreaId = 1850144
 const yokohamaAreaId = 1848354
+// 天気予報表示設定地域
+let selectArea = null
 
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
 
 const bot = new line.Client(line_config);
 
-let selectArea = null
-
 // ルーターの設定
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
-  res.sendStatus(200);
-  let events_processed = [];
+  res.sendStatus(200)
+  let events_processed = []
   // イベントオブジェクトを順次処理
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
@@ -51,8 +52,8 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         case "週間予報":
           axios.get(apiUrl, {
             params: {
-              lat: selectArea == null ? lat : selectArea.lat,
-              lon: selectArea == null ? lon : selectArea.lon,
+              lat: selectArea == null ? defaultLat : selectArea.lat,
+              lon: selectArea == null ? defaultLon : selectArea.lon,
               lang: "ja",
               appid: process.env.OPEN_WEATHER_API_APPID
             },
@@ -64,7 +65,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           })
           .then(res => {
             // 返信内容を設定してユーザーに送信
-            let week_weather = ""
+            let week_weather = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
             for(i = 0; i < res.data.daily.length; i++) {
               if(i < res.data.daily.length - 1) {
                 week_weather += responseMessage(res.data.daily[i]) + "\n\n"
