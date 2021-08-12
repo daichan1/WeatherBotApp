@@ -97,7 +97,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 });
 
 // 自動通知機能
-cron.schedule("0 15 10 * * *", () => {
+cron.schedule("0 20 10 * * *", () => {
   bot.pushMessage("chansa-", "test")
 })
 
