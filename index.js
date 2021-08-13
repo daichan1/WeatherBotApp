@@ -20,7 +20,7 @@ const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 // 天気予報表示設定地域
 let selectArea = null
 // 毎日通知管理
-let datNotification = null
+let dailyNotification = null
 
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
@@ -55,22 +55,18 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             type: 'text',
             text: "毎日通知をONに設定しました\n毎朝8時に今日の天気を通知します"
           }))
-          events_processed.push(bot.pushMessage(userId, {
-            type: "text",
-            text: "test"
-          }))
           // 自動通知機能
-          datNotification = cron.schedule("15 14 * * *", () => {
+          dailyNotification = cron.schedule("10 23 * * *", () => {
             events_processed.push(bot.pushMessage(userId, {
               type: "text",
               text: "test"
             }))
           })
-          datNotification.start()
+          dailyNotification.start()
           break
         case "毎日通知なし":
-          if(datNotification != null) {
-            datNotification.stop()
+          if(dailyNotification != null) {
+            dailyNotification.stop()
           }
           break
         case "週間予報":
