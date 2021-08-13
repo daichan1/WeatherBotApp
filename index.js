@@ -54,7 +54,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             text: "毎日通知をONに設定しました\n毎朝8時に今日の天気を通知します"
           }))
           // 自動通知機能
-          cron.schedule("20 13 * * *", () => {
+          cron.schedule("45 13 * * *", () => {
             bot.pushMessage(`${userId}`, {
               type: "text",
               text: "test"
