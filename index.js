@@ -50,13 +50,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           }))
           break
         case "毎日通知あり":
+          let userId = event.source.userId
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: "毎日通知をONに設定しました\n毎朝8時に今日の天気を通知します"
           }))
           // 自動通知機能
-          datNotification = cron.schedule("10 14 * * *", () => {
-            events_processed.push(bot.replyMessage(event.replyToken, {
+          datNotification = cron.schedule("15 14 * * *", () => {
+            events_processed.push(bot.pushMessage(userId, {
               type: "text",
               text: "test"
             }))
