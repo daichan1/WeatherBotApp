@@ -47,6 +47,15 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
+        case "毎日通知あり":
+          let userId = event.source.userId
+          events_processed.push(bot.replyMessage(event.replyToken, {
+            type: 'text',
+            text: `ユーザーID：${userId}`
+          }))
+          break
+        case "毎日通知なし":
+          break
         case "週間予報":
           axios.get(apiUrl, {
             params: {
@@ -98,7 +107,10 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
 
 // 自動通知機能
 cron.schedule("55 12 * * *", () => {
-  bot.pushMessage("chansa-", "test")
+  bot.pushMessage("chansa-", {
+    type: "text",
+    text: "test"
+  })
 })
 
 function responseMessage(daily_data) {
