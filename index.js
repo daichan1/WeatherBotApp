@@ -2,6 +2,7 @@
 const server = require("express")();
 const line = require("@line/bot-sdk");
 const axios = require("axios");
+const cron = require("node-cron");
 const areaModule = require("./src/area")
 
 // パラメーターの設定(LINE)
@@ -18,6 +19,8 @@ const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
 // 天気予報表示設定地域
 let selectArea = null
+// 毎日通知管理
+let dailyNotification = null
 
 // Webサーバーの設定
 server.listen(process.env.PORT || 3000);
@@ -45,6 +48,26 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             type: 'text',
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
+          break
+        case "毎日通知あり":
+          let userId = event.source.userId
+          events_processed.push(bot.replyMessage(event.replyToken, {
+            type: 'text',
+            text: "毎日通知をONに設定しました\n毎朝8時に今日の天気を通知します"
+          }))
+          // 自動通知機能
+          dailyNotification = cron.schedule("10 23 * * *", () => {
+            events_processed.push(bot.pushMessage(userId, {
+              type: "text",
+              text: "test"
+            }))
+          })
+          dailyNotification.start()
+          break
+        case "毎日通知なし":
+          if(dailyNotification != null) {
+            dailyNotification.stop()
+          }
           break
         case "週間予報":
           axios.get(apiUrl, {
