@@ -51,8 +51,15 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           let userId = event.source.userId
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
-            text: `ユーザーID：${userId}`
+            text: "毎日通知をONに設定しました\n毎朝8時に今日の天気を通知します"
           }))
+          // 自動通知機能
+          cron.schedule("20 13 * * *", () => {
+            bot.pushMessage(`${userId}`, {
+              type: "text",
+              text: "test"
+            })
+          })
           break
         case "毎日通知なし":
           break
@@ -104,14 +111,6 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     }
   )
 });
-
-// 自動通知機能
-cron.schedule("55 12 * * *", () => {
-  bot.pushMessage("chansa-", {
-    type: "text",
-    text: "test"
-  })
-})
 
 function responseMessage(daily_data) {
   return `${unixtimeToDate(daily_data.dt)} ${getWeatherEmoji(daily_data.weather[0].main)}
