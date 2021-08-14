@@ -1,6 +1,7 @@
 // 地域ID
 const tokyoAreaId = 1850144
 const yokohamaAreaId = 1848354
+const kawasakiAreaId = 1859642
 
 // 地域リスト
 const areaList = {
@@ -13,6 +14,11 @@ const areaList = {
     name: "横浜",
     lat: 35.447781,
     lon: 139.642502
+  },
+  1859642: {
+    name: "川崎",
+    lat: 35.520561,
+    lon: 139.717224
   }
 }
 
@@ -29,5 +35,6 @@ class Area {
 module.exports = {
   Area: Area,
   tokyoAreaId: tokyoAreaId,
-  yokohamaAreaId: yokohamaAreaId
+  yokohamaAreaId: yokohamaAreaId,
+  kawasakiAreaId: kawasakiAreaId
 }

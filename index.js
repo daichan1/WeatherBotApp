@@ -33,15 +33,22 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
       switch(event.message.text) {
-        case "1":
+        case "東京":
           selectArea = new areaModule.Area(areaModule.tokyoAreaId)
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
-        case "2":
+        case "横浜":
           selectArea = new areaModule.Area(areaModule.yokohamaAreaId)
+          events_processed.push(bot.replyMessage(event.replyToken, {
+            type: 'text',
+            text: `天気予報表示地域を${selectArea.name}に設定しました`
+          }))
+          break
+        case "川崎":
+          selectArea = new areaModule.Area(areaModule.kawasakiAreaId)
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'text',
             text: `天気予報表示地域を${selectArea.name}に設定しました`
