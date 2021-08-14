@@ -47,6 +47,37 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
+        case "今日の天気":
+          axios.get(apiUrl, {
+            params: {
+              lat: selectArea == null ? defaultLat : selectArea.lat,
+              lon: selectArea == null ? defaultLon : selectArea.lon,
+              lang: "ja",
+              appid: process.env.OPEN_WEATHER_API_APPID
+            },
+            headers: {
+              Accept: 'application/json',
+              'Content-Type': 'application/json'
+            },
+            responseType: 'json'
+          })
+          .then(res => {
+            // 返信内容を設定してユーザーに送信
+            let today_weather = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
+            today_weather += weatherModule.responseMessage(res.data.daily[0])
+            events_processed.push(bot.replyMessage(event.replyToken, {
+              type: 'text',
+              text: today_weather
+            }))
+          })
+          .catch(err => {
+            // エラーメッセージを設定してユーザーに送信
+            events_processed.push(bot.replyMessage(event.replyToken, {
+              type: 'text',
+              text: '今日の天気の取得に失敗'
+            }))
+          })
+          break
         case "週間予報":
           axios.get(apiUrl, {
             params: {
