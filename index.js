@@ -54,6 +54,32 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
+        case "地域選択":
+          events_processed.push(bot.replyMessage(event.replyToken, {
+            type: 'template',
+            altText: "地域選択",
+            template: {
+              type: "buttons",
+              actions: [
+                {
+                  type: "message",
+                  label: "東京",
+                  text: "東京"
+                },
+                {
+                  type: "message",
+                  label: "横浜",
+                  text: "横浜"
+                },
+                {
+                  type: "message",
+                  label: "川崎",
+                  text: "川崎"
+                }
+              ]
+            }
+          }))
+          break
         case "今日の天気":
           axios.get(apiUrl, {
             params: {
