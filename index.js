@@ -56,12 +56,40 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           break
         case "地域設定":
           events_processed.push(bot.replyMessage(event.replyToken, {
-            type: "button",
-            style: "secondary",
-            action: {
-              type: "message",
-              label: "東京",
-              text: "東京"
+            "type": "bubble",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "spacing": "md",
+              "contents": [
+                {
+                  "type": "button",
+                  "style": "primary",
+                  "action": {
+                    "type": "uri",
+                    "label": "Primary style button",
+                    "uri": "http://worksmobile.com"
+                  }
+                },
+                {
+                  "type": "button",
+                  "style": "secondary",
+                  "action": {
+                    "type": "uri",
+                    "label": "Secondary style button",
+                    "uri": "http://worksmobile.com"
+                  }
+                },
+                {
+                  "type": "button",
+                  "style": "link",
+                  "action": {
+                    "type": "uri",
+                    "label": "Link style button",
+                    "uri": "http://worksmobile.com"
+                  }
+                }
+              ]
             }
             // type: 'bubble',
             // body: {
