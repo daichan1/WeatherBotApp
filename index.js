@@ -54,10 +54,10 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
-        case "地域選択":
+        case "地域設定":
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'template',
-            altText: "地域選択",
+            altText: "地域設定",
             template: {
               type: "buttons",
               actions: [
