@@ -66,7 +66,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                   type: "button",
                   style: "secondary",
                   action: {
-                    type: "text",
+                    type: "message",
                     label: "東京",
                     text: "東京"
                   }
