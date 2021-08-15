@@ -58,6 +58,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           events_processed.push(bot.replyMessage(event.replyToken, {
             type: 'template',
             altText: "地域設定",
+            text: "地域設定",
             template: {
               type: "buttons",
               actions: [
