@@ -39,17 +39,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           break
         case "横浜":
           selectArea = new areaModule.Area(areaModule.yokohamaAreaId)
-          events_processed.push(bot.replyMessage(event.replyToken, {
-            type: 'text',
-            text: `天気予報表示地域を${selectArea.name}に設定しました`
-          }))
+          events_processed.push(bot.replyMessage(event.replyToken, selectArea.replyMessage()))
           break
         case "川崎":
           selectArea = new areaModule.Area(areaModule.kawasakiAreaId)
-          events_processed.push(bot.replyMessage(event.replyToken, {
-            type: 'text',
-            text: `天気予報表示地域を${selectArea.name}に設定しました`
-          }))
+          events_processed.push(bot.replyMessage(event.replyToken, selectArea.replyMessage()))
           break
         case "地域設定":
           events_processed.push(bot.replyMessage(event.replyToken, {
