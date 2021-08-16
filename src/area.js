@@ -40,7 +40,7 @@ class Area {
   }
 }
 
-module.exports.setAreaReplyMessage = () => {
+function setAreaReplyMessage() {
   const result = {
     "type": "template",
     "altText": "地域設定",
@@ -72,6 +72,7 @@ module.exports.setAreaReplyMessage = () => {
 
 module.exports = {
   Area: Area,
+  setAreaReplyMessage: setAreaReplyMessage,
   tokyoAreaId: tokyoAreaId,
   yokohamaAreaId: yokohamaAreaId,
   kawasakiAreaId: kawasakiAreaId
