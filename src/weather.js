@@ -21,7 +21,9 @@ module.exports.fetchDayWeather = (selectArea, message) => {
     },
     responseType: 'json'
   })
-  .then(res => {})
+  .then(res => {
+    return res
+  })
   .catch(err => {
     console.log(err)
   })
@@ -31,7 +33,7 @@ module.exports.fetchDayWeather = (selectArea, message) => {
   } else if(message == "明日の天気") {
     dayWeatherForecast += responseMessage(res.data.daily[1])
   }
-  
+
   const replyMessage = {
     type: 'text',
     text: dayWeatherForecast
