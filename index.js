@@ -42,10 +42,16 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           events_processed.push(bot.replyMessage(event.replyToken, areaModule.setAreaReplyMessage()))
           break
         case "今日の天気":
-          events_processed.push(bot.replyMessage(event.replyToken, weatherModule.fetchDayWeather(selectArea, event.message.text)))
+          weatherModule.fetchDayWeather(selectArea, event.message.text)
+          .then((replyMessage) => {
+            events_processed.push(bot.replyMessage(event.replyToken, replyMessage))
+          })
           break
         case "明日の天気":
-          events_processed.push(bot.replyMessage(event.replyToken, weatherModule.fetchDayWeather(selectArea, event.message.text)))
+          weatherModule.fetchDayWeather(selectArea, event.message.text)
+          .then((replyMessage) => {
+            events_processed.push(bot.replyMessage(event.replyToken, replyMessage))
+          })
           break
         case "週間予報":
           events_processed.push(bot.replyMessage(event.replyToken, weatherModule.fetchWeekWeather(selectArea)))
