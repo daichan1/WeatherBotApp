@@ -35,10 +35,7 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       switch(event.message.text) {
         case "東京":
           selectArea = new areaModule.Area(areaModule.tokyoAreaId)
-          events_processed.push(bot.replyMessage(event.replyToken, {
-            type: 'text',
-            text: `天気予報表示地域を${selectArea.name}に設定しました`
-          }))
+          events_processed.push(bot.replyMessage(event.replyToken, selectArea.replyMessage()))
           break
         case "横浜":
           selectArea = new areaModule.Area(areaModule.yokohamaAreaId)

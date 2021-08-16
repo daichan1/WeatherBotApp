@@ -30,6 +30,14 @@ class Area {
     this.lat = areaList[id].lat
     this.lon = areaList[id].lon
   }
+
+  replyMessage() {
+    const result = {
+      type: 'text',
+      text: `天気予報表示地域を${this.name}に設定しました`
+    }
+    return result
+  }
 }
 
 module.exports = {
