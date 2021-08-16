@@ -54,7 +54,10 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           })
           break
         case "週間予報":
-          events_processed.push(bot.replyMessage(event.replyToken, weatherModule.fetchWeekWeather(selectArea)))
+          weatherModule.fetchWeekWeather(selectArea)
+          .then((replyMessage) => {
+            events_processed.push(bot.replyMessage(event.replyToken, replyMessage))
+          })
           break
         default:
       }

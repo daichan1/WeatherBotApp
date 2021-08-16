@@ -22,33 +22,25 @@ module.exports.fetchDayWeather = (selectArea, message) => {
     responseType: 'json'
   })
   .then((res) => {
-    let replyMessage = {}
     let dayWeatherForecast = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
     if(message == "今日の天気") {
       dayWeatherForecast += responseMessage(res.data.daily[0])
     } else if(message == "明日の天気") {
       dayWeatherForecast += responseMessage(res.data.daily[1])
     }
-    return replyMessage = {
+    let replyMessage = {
       type: 'text',
       text: dayWeatherForecast
     }
+    return replyMessage
   })
   .catch((err) => {
     console.log(err)
   })
 }
 
-function setReplyMessage(replyMessage, forecast) {
-  replyMessage = {
-    type: 'text',
-    text: forecast
-  }
-}
-
 module.exports.fetchWeekWeather = (selectArea) => {
-  let replyMessage = {}
-  axios.get(apiUrl, {
+  return axios.get(apiUrl, {
     params: {
       lat: selectArea == null ? defaultLat : selectArea.lat,
       lon: selectArea == null ? defaultLon : selectArea.lon,
@@ -62,7 +54,6 @@ module.exports.fetchWeekWeather = (selectArea) => {
     responseType: 'json'
   })
   .then(res => {
-    // 返信内容を設定してユーザーに送信
     let weekWeatherForecast = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
     for(i = 0; i < res.data.daily.length; i++) {
       if(i < res.data.daily.length - 1) {
@@ -71,10 +62,11 @@ module.exports.fetchWeekWeather = (selectArea) => {
         weekWeatherForecast += responseMessage(res.data.daily[i])
       }
     }
-    replyMessage = {
+    let replyMessage = {
       type: 'text',
       text: weekWeatherForecast
     }
+    return replyMessage
   })
   .catch(err => {
     replyMessage = {
@@ -82,7 +74,6 @@ module.exports.fetchWeekWeather = (selectArea) => {
       text: "エラー発生"
     }
   })
-  return replyMessage
 }
 
 function responseMessage(daily_data) {
