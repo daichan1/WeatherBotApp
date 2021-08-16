@@ -57,26 +57,26 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
         case "地域設定":
           events_processed.push(bot.replyMessage(event.replyToken, {
             "type": "template",
-            "altText": "This is a buttons template",
+            "altText": "地域設定",
             "template": {
                 "type": "buttons",
-                "title": "Menu",
-                "text": "Please select",
+                "title": "地域設定",
+                "text": "天気予報を表示したい地域を選択してください",
                 "actions": [
                     {
                       "type": "message",
-                      "label": "test",
-                      "text": "test"
+                      "label": "東京",
+                      "text": "東京"
                     },
                     {
-                      "type": "postback",
-                      "label": "Add to cart",
-                      "data": "action=add&itemid=123"
+                      "type": "message",
+                      "label": "横浜",
+                      "text": "横浜"
                     },
                     {
-                      "type": "uri",
-                      "label": "View detail",
-                      "uri": "http://example.com/page/123"
+                      "type": "message",
+                      "label": "川崎",
+                      "text": "川崎"
                     }
                 ]
             }
