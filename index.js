@@ -56,14 +56,29 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           break
         case "地域設定":
           events_processed.push(bot.replyMessage(event.replyToken, {
-            "type":"message",
-            "label":"hello",
-            "text":"hello",
-            "area":{
-                "x":520,
-                "y":0,
-                "width":520,
-                "height":1040
+            "type": "template",
+            "altText": "This is a buttons template",
+            "template": {
+                "type": "buttons",
+                "title": "Menu",
+                "text": "Please select",
+                "actions": [
+                    {
+                      "type": "postback",
+                      "label": "Buy",
+                      "data": "action=buy&itemid=123"
+                    },
+                    {
+                      "type": "postback",
+                      "label": "Add to cart",
+                      "data": "action=add&itemid=123"
+                    },
+                    {
+                      "type": "uri",
+                      "label": "View detail",
+                      "uri": "http://example.com/page/123"
+                    }
+                ]
             }
           }))
           break
