@@ -22,6 +22,7 @@ const bot = new line.Client(line_config);
 server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
   res.sendStatus(200)
   let events_processed = []
+  let todayWeatherObject = {}
   // イベントオブジェクトを順次処理
   req.body.events.forEach((event) => {
     if(event.type == 'message' && event.message.type == 'text') {
@@ -42,11 +43,11 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           events_processed.push(bot.replyMessage(event.replyToken, areaModule.setAreaReplyMessage()))
           break
         case "今日の天気":
-          const todayWeatherObject = weatherModule.fetchDayWeather(selectArea, event.message.text)
+          todayWeatherObject = weatherModule.fetchDayWeather(selectArea, event.message.text)
           events_processed.push(bot.replyMessage(event.replyToken, todayWeatherObject))
           break
         case "明日の天気":
-          const todayWeatherObject = weatherModule.fetchDayWeather(selectArea, event.message.text)
+          todayWeatherObject = weatherModule.fetchDayWeather(selectArea, event.message.text)
           events_processed.push(bot.replyMessage(event.replyToken, todayWeatherObject))
           break
         case "週間予報":
