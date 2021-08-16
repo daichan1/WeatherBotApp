@@ -1,7 +1,6 @@
 // モジュールのインポート
 const server = require("express")();
 const line = require("@line/bot-sdk");
-const axios = require("axios");
 const areaModule = require("./src/area")
 const weatherModule = require("./src/weather")
 
@@ -10,12 +9,6 @@ const line_config = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN,
   channelSecret: process.env.LINE_CHANNEL_SECRET
 };
-
-// 初期座標(東京)
-const defaultLat = 35.689499
-const defaultLon = 139.691711
-// 天気予報APIのURL
-const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
 // 天気予報表示設定地域
 let selectArea = null
@@ -35,150 +28,35 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
       switch(event.message.text) {
         case "東京":
           selectArea = new areaModule.Area(areaModule.tokyoAreaId)
-          events_processed.push(bot.replyMessage(event.replyToken, {
-            type: 'text',
-            text: `天気予報表示地域を${selectArea.name}に設定しました`
-          }))
+          events_processed.push(bot.replyMessage(event.replyToken, selectArea.replyMessage()))
           break
         case "横浜":
           selectArea = new areaModule.Area(areaModule.yokohamaAreaId)
-          events_processed.push(bot.replyMessage(event.replyToken, {
-            type: 'text',
-            text: `天気予報表示地域を${selectArea.name}に設定しました`
-          }))
+          events_processed.push(bot.replyMessage(event.replyToken, selectArea.replyMessage()))
           break
         case "川崎":
           selectArea = new areaModule.Area(areaModule.kawasakiAreaId)
-          events_processed.push(bot.replyMessage(event.replyToken, {
-            type: 'text',
-            text: `天気予報表示地域を${selectArea.name}に設定しました`
-          }))
+          events_processed.push(bot.replyMessage(event.replyToken, selectArea.replyMessage()))
           break
         case "地域設定":
-          events_processed.push(bot.replyMessage(event.replyToken, {
-            "type": "template",
-            "altText": "地域設定",
-            "template": {
-                "type": "buttons",
-                "title": "地域設定",
-                "text": "天気予報を表示したい地域を選択してください",
-                "actions": [
-                    {
-                      "type": "message",
-                      "label": "東京",
-                      "text": "東京"
-                    },
-                    {
-                      "type": "message",
-                      "label": "横浜",
-                      "text": "横浜"
-                    },
-                    {
-                      "type": "message",
-                      "label": "川崎",
-                      "text": "川崎"
-                    }
-                ]
-            }
-          }))
+          events_processed.push(bot.replyMessage(event.replyToken, areaModule.setAreaReplyMessage()))
           break
         case "今日の天気":
-          axios.get(apiUrl, {
-            params: {
-              lat: selectArea == null ? defaultLat : selectArea.lat,
-              lon: selectArea == null ? defaultLon : selectArea.lon,
-              lang: "ja",
-              appid: process.env.OPEN_WEATHER_API_APPID
-            },
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            responseType: 'json'
-          })
-          .then(res => {
-            // 返信内容を設定してユーザーに送信
-            let today_weather = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
-            today_weather += weatherModule.responseMessage(res.data.daily[0])
-            events_processed.push(bot.replyMessage(event.replyToken, {
-              type: 'text',
-              text: today_weather
-            }))
-          })
-          .catch(err => {
-            // エラーメッセージを設定してユーザーに送信
-            events_processed.push(bot.replyMessage(event.replyToken, {
-              type: 'text',
-              text: '今日の天気の取得に失敗'
-            }))
+          weatherModule.fetchDayWeather(selectArea, event.message.text)
+          .then((replyMessage) => {
+            events_processed.push(bot.replyMessage(event.replyToken, replyMessage))
           })
           break
         case "明日の天気":
-          axios.get(apiUrl, {
-            params: {
-              lat: selectArea == null ? defaultLat : selectArea.lat,
-              lon: selectArea == null ? defaultLon : selectArea.lon,
-              lang: "ja",
-              appid: process.env.OPEN_WEATHER_API_APPID
-            },
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            responseType: 'json'
-          })
-          .then(res => {
-            // 返信内容を設定してユーザーに送信
-            let tomorrow_weather = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
-            tomorrow_weather += weatherModule.responseMessage(res.data.daily[1])
-            events_processed.push(bot.replyMessage(event.replyToken, {
-              type: 'text',
-              text: tomorrow_weather
-            }))
-          })
-          .catch(err => {
-            // エラーメッセージを設定してユーザーに送信
-            events_processed.push(bot.replyMessage(event.replyToken, {
-              type: 'text',
-              text: '今日の天気の取得に失敗'
-            }))
+          weatherModule.fetchDayWeather(selectArea, event.message.text)
+          .then((replyMessage) => {
+            events_processed.push(bot.replyMessage(event.replyToken, replyMessage))
           })
           break
         case "週間予報":
-          axios.get(apiUrl, {
-            params: {
-              lat: selectArea == null ? defaultLat : selectArea.lat,
-              lon: selectArea == null ? defaultLon : selectArea.lon,
-              lang: "ja",
-              appid: process.env.OPEN_WEATHER_API_APPID
-            },
-            headers: {
-              Accept: 'application/json',
-              'Content-Type': 'application/json'
-            },
-            responseType: 'json'
-          })
-          .then(res => {
-            // 返信内容を設定してユーザーに送信
-            let week_weather = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
-            for(i = 0; i < res.data.daily.length; i++) {
-              if(i < res.data.daily.length - 1) {
-                week_weather += weatherModule.responseMessage(res.data.daily[i]) + "\n\n"
-              } else {
-                week_weather += weatherModule.responseMessage(res.data.daily[i])
-              }
-            }
-            events_processed.push(bot.replyMessage(event.replyToken, {
-              type: 'text',
-              text: week_weather
-            }))
-          })
-          .catch(err => {
-            // エラーメッセージを設定してユーザーに送信
-            events_processed.push(bot.replyMessage(event.replyToken, {
-              type: 'text',
-              text: 'APIの実行に失敗'
-            }))
+          weatherModule.fetchWeekWeather(selectArea)
+          .then((replyMessage) => {
+            events_processed.push(bot.replyMessage(event.replyToken, replyMessage))
           })
           break
         default:
