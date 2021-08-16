@@ -64,9 +64,9 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
                 "text": "Please select",
                 "actions": [
                     {
-                      "type": "postback",
-                      "label": "Buy",
-                      "data": "action=buy&itemid=123"
+                      "type": "message",
+                      "label": "test",
+                      "text": "test"
                     },
                     {
                       "type": "postback",
