@@ -22,14 +22,14 @@ module.exports.fetchDayWeather = (selectArea, message) => {
     },
     responseType: 'json'
   })
-  res.then((res) => {
+  replyMessage = res.then((res) => {
     let dayWeatherForecast = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
     if(message == "今日の天気") {
       dayWeatherForecast += responseMessage(res.data.daily[0])
     } else if(message == "明日の天気") {
       dayWeatherForecast += responseMessage(res.data.daily[1])
     }
-    replyMessage = {
+    return replyMessage = {
       type: 'text',
       text: dayWeatherForecast
     }
