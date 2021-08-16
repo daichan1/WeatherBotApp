@@ -56,23 +56,9 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           break
         case "地域設定":
           events_processed.push(bot.replyMessage(event.replyToken, {
-            type: 'bubble',
-            body: {
-              type: "box",
-              layout: "vertical",
-              spacing: "md",
-              contents: [
-                {
-                  type: "button",
-                  style: "secondary",
-                  action: {
-                    type: "message",
-                    label: "東京",
-                    text: "東京"
-                  }
-                }
-              ]
-            }
+            "type": "sticker",
+            "packageId": "446",
+            "stickerId": "1988"
           }))
           break
         case "今日の天気":
