@@ -56,23 +56,14 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
           break
         case "地域設定":
           events_processed.push(bot.replyMessage(event.replyToken, {
-            "type": "template",
-            "altText": "this is a confirm template",
-            "template": {
-                "type": "confirm",
-                "text": "Are you sure?",
-                "actions": [
-                    {
-                      "type": "message",
-                      "label": "Yes",
-                      "text": "yes"
-                    },
-                    {
-                      "type": "message",
-                      "label": "No",
-                      "text": "no"
-                    }
-                ]
+            "type":"message",
+            "label":"hello",
+            "text":"hello",
+            "area":{
+                "x":520,
+                "y":0,
+                "width":520,
+                "height":1040
             }
           }))
           break
