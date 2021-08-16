@@ -8,9 +8,7 @@ const defaultLon = 139.691711
 const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
 module.exports.fetchDayWeather = (selectArea, message) => {
-  const self = this
-  let replyMessage = {}
-  axios.get(apiUrl, {
+  const res = axios.get(apiUrl, {
     params: {
       lat: selectArea == null ? defaultLat : selectArea.lat,
       lon: selectArea == null ? defaultLon : selectArea.lon,
@@ -23,30 +21,25 @@ module.exports.fetchDayWeather = (selectArea, message) => {
     },
     responseType: 'json'
   })
-  .then(res => {
-    // 返信内容を設定してユーザーに送信
-    let dayWeatherForecast = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
-    if(message == "今日の天気") {
-      dayWeatherForecast += responseMessage(res.data.daily[0])
-    } else if(message == "明日の天気") {
-      dayWeatherForecast += responseMessage(res.data.daily[1])
-    }
-    self.replyMessage = {
-      type: 'text',
-      text: dayWeatherForecast
-    }
-  })
+  .then(res => {})
   .catch(err => {
-    self.replyMessage = {
-      type: 'text',
-      text: 'エラー発生'
-    }
+    console.log(err)
   })
+  let dayWeatherForecast = selectArea == null ? "東京の天気\n" : `${selectArea.name}の天気\n`
+  if(message == "今日の天気") {
+    dayWeatherForecast += responseMessage(res.data.daily[0])
+  } else if(message == "明日の天気") {
+    dayWeatherForecast += responseMessage(res.data.daily[1])
+  }
+  
+  const replyMessage = {
+    type: 'text',
+    text: dayWeatherForecast
+  }
   return replyMessage
 }
 
 module.exports.fetchWeekWeather = (selectArea) => {
-  const self = this
   let replyMessage = {}
   axios.get(apiUrl, {
     params: {
@@ -71,13 +64,13 @@ module.exports.fetchWeekWeather = (selectArea) => {
         weekWeatherForecast += responseMessage(res.data.daily[i])
       }
     }
-    self.replyMessage = {
+    replyMessage = {
       type: 'text',
       text: weekWeatherForecast
     }
   })
   .catch(err => {
-    self.replyMessage = {
+    replyMessage = {
       type: 'text',
       text: "エラー発生"
     }
