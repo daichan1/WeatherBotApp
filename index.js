@@ -54,6 +54,34 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
             text: `天気予報表示地域を${selectArea.name}に設定しました`
           }))
           break
+        case "地域設定":
+          events_processed.push(bot.replyMessage(event.replyToken, {
+            "type": "template",
+            "altText": "地域設定",
+            "template": {
+                "type": "buttons",
+                "title": "地域設定",
+                "text": "天気予報を表示したい地域を選択してください",
+                "actions": [
+                    {
+                      "type": "message",
+                      "label": "東京",
+                      "text": "東京"
+                    },
+                    {
+                      "type": "message",
+                      "label": "横浜",
+                      "text": "横浜"
+                    },
+                    {
+                      "type": "message",
+                      "label": "川崎",
+                      "text": "川崎"
+                    }
+                ]
+            }
+          }))
+          break
         case "今日の天気":
           axios.get(apiUrl, {
             params: {
@@ -158,9 +186,12 @@ server.post('/bot/webhook', line.middleware(line_config), (req, res, next) => {
     }
   });
   // 全てのイベント処理が終了したら何個のイベントが処理されたかをログに出力
-  Promise.all(events_processed).then(
-    (response) => {
+  Promise
+    .all(events_processed)
+    .then((response) => {
       console.log(`${response.length} event(s) processed`);
-    }
-  )
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 });
