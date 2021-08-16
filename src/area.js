@@ -42,27 +42,27 @@ class Area {
 
 function setAreaReplyMessage() {
   const result = {
-    "type": "template",
-    "altText": "地域設定",
-    "template": {
-        "type": "buttons",
-        "title": "地域設定",
-        "text": "天気予報を表示したい地域を選択してください",
-        "actions": [
+    type: "template",
+    altText: "地域設定",
+    template: {
+        type: "buttons",
+        title: "地域設定",
+        text: "天気予報を表示したい地域を選択してください",
+        actions: [
             {
-              "type": "message",
-              "label": "東京",
-              "text": "東京"
+              type: "message",
+              label: "東京",
+              text: "東京"
             },
             {
-              "type": "message",
-              "label": "横浜",
-              "text": "横浜"
+              type: "message",
+              label: "横浜",
+              text: "横浜"
             },
             {
-              "type": "message",
-              "label": "川崎",
-              "text": "川崎"
+              type: "message",
+              label: "川崎",
+              text: "川崎"
             }
         ]
     }
