@@ -8,6 +8,7 @@ const defaultLon = 139.691711
 const apiUrl = "https://api.openweathermap.org/data/2.5/onecall";
 
 module.exports.fetchDayWeather = (selectArea, message) => {
+  const self = this
   let replyMessage = {}
   axios.get(apiUrl, {
     params: {
@@ -30,13 +31,13 @@ module.exports.fetchDayWeather = (selectArea, message) => {
     } else if(message == "明日の天気") {
       dayWeatherForecast += responseMessage(res.data.daily[1])
     }
-    replyMessage = {
+    self.replyMessage = {
       type: 'text',
       text: dayWeatherForecast
     }
   })
   .catch(err => {
-    replyMessage = {
+    self.replyMessage = {
       type: 'text',
       text: 'エラー発生'
     }
@@ -45,6 +46,7 @@ module.exports.fetchDayWeather = (selectArea, message) => {
 }
 
 module.exports.fetchWeekWeather = (selectArea) => {
+  const self = this
   let replyMessage = {}
   axios.get(apiUrl, {
     params: {
@@ -69,13 +71,13 @@ module.exports.fetchWeekWeather = (selectArea) => {
         weekWeatherForecast += responseMessage(res.data.daily[i])
       }
     }
-    replyMessage = {
+    self.replyMessage = {
       type: 'text',
       text: weekWeatherForecast
     }
   })
   .catch(err => {
-    replyMessage = {
+    self.replyMessage = {
       type: 'text',
       text: "エラー発生"
     }
